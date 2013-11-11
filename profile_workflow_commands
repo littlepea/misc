@@ -1,0 +1,86 @@
+# Things to add ~/.profile for git workflow
+
+export DEVELOP="MKT-develop"
+export RUN=1
+export TRACK=1
+
+# executes a command or just prints it if $RUN is 0
+# usage 1: exec "date"
+# usage 2: RUN=0 exec "date"
+# usage 3: export RUN=0; exec "date"
+function exec() {
+	: ${RUN=1}
+	local command=$1
+	if [ $RUN -eq 1 ]
+	then
+		echo -e $($command)
+	else
+		echo ">>> $command"
+	fi
+}
+
+# updates develop branch from master
+# usage: develop-update
+function develop-update() {
+        : ${DEVELOP="MKT-develop"}
+        exec "git checkout $DEVELOP"
+        exec "git pull --rebase -s recursive -X ours origin master"
+}
+
+# updates develop branch from master and pushes it to remote
+# usage: develop-sync
+function develop-sync() {
+        : ${DEVELOP="MKT-develop"}
+	develop-update
+	exec "git pull origin $DEVELOP"
+        exec "git push origin $DEVELOP"
+}
+
+# starts a new feature branch from develop
+# usage: feature-start MKT-155-aai-sep-2013
+# usage 2: TRACK=0 feature-start MKT-155-aai-sep-2013
+# usage 3: DEVELOP=DNA-develop feature-start MKT-155-aai-sep-2013
+function feature-start() {
+	: ${DEVELOP="MKT-develop"}
+	: ${TRACK=1}
+	local feature=$1
+	if [ $TRACK -eq 1 ]
+	then
+		exec "git checkout --track -b $feature origin/$DEVELOP"
+	else
+		exec "git checkout $feature"
+	fi
+	exec "git push origin $feature"
+}
+
+# updates a current feature branch from develop
+# usage: feature-update
+# usage 2: DEVELOP=DNA-develop feature-update
+function feature-update() {
+	: ${DEVELOP="MKT-develop"}
+	exec "git pull --rebase -s recursive -X ours origin $DEVELOP"
+}
+
+# switches to a feature branch and updates it from develop 
+# usage: feature-switch MKT-155-aai-sep-2013
+# usage 2: feature-switch MKT-155
+# usage 3: feature-switch 155
+function feature-switch() {
+	feature=$1
+	feature=$(git branch | grep $feature)
+	exec "git checkout $feature"
+	feature-update
+}
+
+# updates and pushes current feature branch to the remote
+# usage: feature-sync
+# usage 2: DEVELOP=DNA-develop feature-sync
+function feature-sync() {
+        : ${DEVELOP="MKT-develop"}
+	branch_name=$(git symbolic-ref -q HEAD)
+	branch_name=${branch_name##refs/heads/}
+	branch_name=${branch_name:-HEAD}
+	local branch=$branch_name
+        feature-update
+	exec "git push -f origin $branch"	
+}
