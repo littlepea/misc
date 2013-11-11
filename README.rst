@@ -23,11 +23,11 @@ Branching
 Useful commands
 ^^^^^^^^^^^^^^^
 
-Add commands from `profile_workflow_commands` into your ~/.profile::
+Add commands from `profile_workflow_commands`_ into your ~/.profile::
 
     cat profile_workflow_commands >> ~/.profile
 
-You can also add aliases from `profile_aliases` into your ~/.profile::
+You can also add aliases from `profile_aliases`_ into your ~/.profile::
 
     cat profile_aliases >> ~/.profile
 
@@ -39,3 +39,5 @@ To set a default develop branch set the DEVELOP env variable::
     export DEVELOP="LOC-develop"
 
 
+.. _profile_workflow_commands: ./profile_workflow_commands
+.. _profile_aliases: ./profile_aliases
