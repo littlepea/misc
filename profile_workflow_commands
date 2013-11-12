@@ -24,16 +24,16 @@ function exec() {
 function develop-update() {
         : ${DEVELOP="MKT-develop"}
         exec "git checkout $DEVELOP"
-        exec "git pull --rebase -s recursive -X ours origin master"
+        exec "git fetch origin master"
+        exec "git rebase origin/master"
 }
 
 # updates develop branch from master and pushes it to remote
 # usage: develop-sync
 function develop-sync() {
         : ${DEVELOP="MKT-develop"}
-	develop-update
-	exec "git pull origin $DEVELOP"
-        exec "git push origin $DEVELOP"
+	    develop-update
+        exec "git push -U origin $DEVELOP"
 }
 
 # starts a new feature branch from develop
@@ -46,11 +46,11 @@ function feature-start() {
 	local feature=$1
 	if [ $TRACK -eq 1 ]
 	then
-		exec "git checkout --track -b $feature origin/$DEVELOP"
+		exec "git checkout -b $feature $DEVELOP"
 	else
-		exec "git checkout $feature"
+		exec "git checkout -b $feature"
 	fi
-	exec "git push origin $feature"
+	exec "git push -u origin $feature"
 }
 
 # updates a current feature branch from develop
@@ -58,7 +58,8 @@ function feature-start() {
 # usage 2: DEVELOP=DNA-develop feature-update
 function feature-update() {
 	: ${DEVELOP="MKT-develop"}
-	exec "git pull --rebase -s recursive -X ours origin $DEVELOP"
+	exec "git fetch origin $DEVELOP"
+	exec "git rebase origin/$DEVELOP"
 }
 
 # switches to a feature branch and updates it from develop 
@@ -81,6 +82,6 @@ function feature-sync() {
 	branch_name=${branch_name##refs/heads/}
 	branch_name=${branch_name:-HEAD}
 	local branch=$branch_name
-        feature-update
-	exec "git push -f origin $branch"	
+    feature-update
+	exec "git push -u origin $branch"
 }
