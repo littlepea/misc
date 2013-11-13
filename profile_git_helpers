@@ -1,0 +1,25 @@
+# helper commands for Git
+
+# reverts to a specific commit by SHA
+# usage: revert-by-sha 56e05fced
+function revert-by-sha() {
+	local sha=$1
+	git reset $sha
+	git reset --soft HEAD@{1}
+	git commit -m "Revert to $sha"
+	git reset --hard
+}
+
+# undo the latest commit
+# usage: reset-latest-commit
+function reset-latest-commit() {
+	local =$1
+	git reset --hard HEAD~1
+}
+
+# undo the latest commit but keep changes (soft)
+# usage: soft-reset-latest-commit
+function soft-reset-latest-commit() {
+	local =$1
+	git reset HEAD~1
+}

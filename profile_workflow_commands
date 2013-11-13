@@ -4,6 +4,11 @@ export DEVELOP="MKT-develop"
 export RUN=1
 export TRACK=1
 
+function trim() {
+    local var=$@
+    echo $var | tr -d ' '
+}
+
 # executes a command or just prints it if $RUN is 0
 # usage 1: exec "date"
 # usage 2: RUN=0 exec "date"
@@ -19,13 +24,12 @@ function exec() {
 	fi
 }
 
-# updates develop branch from master
+# pulls develop branch
 # usage: develop-update
 function develop-update() {
         : ${DEVELOP="MKT-develop"}
         exec "git checkout $DEVELOP"
-        exec "git fetch origin master"
-        exec "git rebase origin/master"
+        exec "git pull origin $DEVELOP"
 }
 
 # updates develop branch from master and pushes it to remote
@@ -33,7 +37,16 @@ function develop-update() {
 function develop-sync() {
         : ${DEVELOP="MKT-develop"}
 	    develop-update
-        exec "git push -U origin $DEVELOP"
+        exec "git push -u origin $DEVELOP"
+}
+
+# updates develop branch from master
+# usage: develop-merge
+function develop-merge() {
+        : ${DEVELOP="MKT-develop"}
+        develop-update
+        exec "git fetch origin master"
+        exec "git merge origin/master"
 }
 
 # starts a new feature branch from develop
@@ -62,13 +75,13 @@ function feature-update() {
 	exec "git rebase origin/$DEVELOP"
 }
 
-# switches to a feature branch and updates it from develop 
+# switches to a feature branch and updates it from develop
 # usage: feature-switch MKT-155-aai-sep-2013
 # usage 2: feature-switch MKT-155
 # usage 3: feature-switch 155
 function feature-switch() {
 	feature=$1
-	feature=$(git branch | grep $feature)
+	feature=$(trim $(git branch | grep $feature))
 	exec "git checkout $feature"
 	feature-update
 }
@@ -83,5 +96,25 @@ function feature-sync() {
 	branch_name=${branch_name:-HEAD}
 	local branch=$branch_name
     feature-update
-	exec "git push -u origin $branch"
+	exec "git push -f origin $branch"
+}
+
+# updates and pushes current feature branch to the remote
+# usage: feature-reset
+# usage 2: feature-reset MKT-155-aai-sep-2013
+# usage 3: feature-reset MKT-155
+function feature-reset() {
+    : ${DEVELOP="MKT-develop"}
+    feature=$1
+    if [ ! -e $feature ]
+    then
+        feature=$(trim $(git branch | grep $feature))
+    else
+        branch_name=$(git symbolic-ref -q HEAD)
+        branch_name=${branch_name##refs/heads/}
+        branch_name=${branch_name:-HEAD}
+        feature=$branch_name
+    fi
+	exec "git checkout $feature"
+	exec "git reset --hard origin/$feature"
 }
