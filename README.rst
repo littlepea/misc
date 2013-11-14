@@ -17,8 +17,11 @@ Branching
 * Each project has it’s own develop branch
 * All feature branches use this branch as upstream
 * We use rebasing to sync the commits as we branch out
+* Before each release we create a release branch to isolate the release related code
 * When we merge back to master (or to develop from feature branches) we use merge (with GitHub pull request)
 * develop branch have to be updated with the latest code on master often (at least daily)
+
+.. image:: git-workflow.png
 
 Useful commands
 ^^^^^^^^^^^^^^^
