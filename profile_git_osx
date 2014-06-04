@@ -1,0 +1,13 @@
+
+# git
+alias g='git'
+
+alias gs='git status '
+alias ga='git add '
+alias gb='git branch '
+alias gc='git checkout'
+alias gd='git diff'
+alias gcm='git commit '
+
+alias got='git '
+alias get='git '
