@@ -90,13 +90,20 @@ function feature-switch() {
 # usage: feature-sync
 # usage 2: DEVELOP=DNA-develop feature-sync
 function feature-sync() {
-        : ${DEVELOP="MKT-develop"}
+    : ${DEVELOP="MKT-develop"}
+    dev=$(cut -d "-" -f 1 <<< "$DEVELOP")
 	branch_name=$(git symbolic-ref -q HEAD)
 	branch_name=${branch_name##refs/heads/}
 	branch_name=${branch_name:-HEAD}
-	local branch=$branch_name
-    feature-update
-	exec "git push -f origin $branch"
+	branch=$branch_name
+    current=$(cut -d "-" -f 1 <<< "$branch")
+    if [ $dev != $current ]
+    then
+        echo "You're trying to sync branch from $current but your develop branch is $DEVELOP"
+    else
+        feature-update
+	    exec "git push -f origin $branch"
+	fi
 }
 
 # updates and pushes current feature branch to the remote
