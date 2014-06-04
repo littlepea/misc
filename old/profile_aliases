@@ -1,0 +1,14 @@
+# workflow
+alias dupdate='develop-update'
+alias dsync='develop-sync'
+alias dmerge='develop-merge'
+alias fstart='feature-start'
+alias fupdate='feature-update'
+alias fswitch='feature-switch'
+alias fsync='feature-sync'
+alias freset='feature-reset'
+
+# git
+alias gb='git branch'
+alias gc='git checkout'
+alias gcb='git -b checkout'

@@ -1,0 +1,27 @@
+[alias]
+    a = add
+    c = checkout
+    s = status
+    b = branch
+    l = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+    la = "!git config -l | grep alias | cut -c 7-"
+
+    co = checkout
+    ci = commit
+    st = status -s
+    br = branch
+    hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p
+
+    cp = cherry-pick
+    cl = clone
+    diff = diff --word-diff
+    dc = diff --cached
+
+    r = reset
+    r1 = reset HEAD^
+    r2 = reset HEAD^^
+    rh = reset --hard
+    rh1 = reset HEAD^ --hard
+    rh2 = reset HEAD^^ --hard
