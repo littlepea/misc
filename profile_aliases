@@ -11,3 +11,5 @@ alias gcm='git commit '
 
 alias got='git '
 alias get='git '
+
+alias gf='git checkout -b feature/'
