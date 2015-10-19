@@ -23,6 +23,12 @@ Add aliases from `git_aliases`_ into your ~/.gitconfig::
 
     cat git_aliases >> ~/.gitconfig
 
+Other files
+-----------
+
+Copy other useful files to `$HOME` dir::
+
+    cp -R binaries/* ~/bin/
 
 .. _profile_commands: ./profile_commands
 .. _profile_aliases: ./profile_aliases

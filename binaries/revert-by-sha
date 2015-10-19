@@ -1,0 +1,10 @@
+# reset the index to the desired tree
+git reset $1
+
+# move the branch pointer back to the previous HEAD
+git reset --soft HEAD@{1}
+
+git commit -n -m "Revert to $1"
+
+# Update working copy to reflect the new commit
+git reset --hard

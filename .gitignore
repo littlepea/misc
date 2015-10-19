@@ -1,5 +1,7 @@
 .profile
 .gitconfig
+ssh_config
+yl_config*
 
 *.py[cod]
 

@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# A hook script to update submodules on branch switch
+
+exec git submodule update
